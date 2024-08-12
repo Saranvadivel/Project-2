@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
 import reportWebVitals from './reportWebVitals';
+// import { Axious } from './Axious/Axios';
 // import { Age } from './DataShow/Age';
 import { Frontpage } from './DataShow/Frontpage';
 // import { Button } from './buttons different-count/Button';
@@ -21,6 +22,7 @@ root.render(
   {/* <Button/> */}
   {/* <Age/> */}
   <Frontpage/>
+  {/* <Axious/> */}
   </React.StrictMode>
 );
 
