@@ -6,22 +6,18 @@ export const Frontpage = () => {
 
         fname: "",
         lname: "",
-        date: ""
+        date: "",
+        age:null
 
     });
+    
 
     const [isedit, setedit] = useState(false);
     const [editindex, seteditindex] = useState(null);
+
     const Change = (e) => {
 
-        let age = CalculateAge(e);
-        
-        setvalue({
-            ...inputvalue,
-            [e.target.name]: e.target.value,
-            "age": age
-
-        })
+        CalculateAge(e);
 
     }
 
@@ -31,9 +27,23 @@ export const Frontpage = () => {
         const dobtime = new Date(dobdate);
         const today = new Date();
         let age = today.getFullYear() - dobtime.getFullYear();
-        return age;
+        const monthDiff = today.getMonth() - dobtime.getMonth();
 
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobtime.getDate())) {
+
+            age--;
+
+        }
+    
+        setvalue({
+
+            ...inputvalue,
+            [e.target.name]: e.target.value,
+            age: age
+            
+        });
     }
+    
 
     const [submitteddata, setdata] = useState([]);
 
@@ -43,7 +53,7 @@ export const Frontpage = () => {
 
         if (isedit) {
 
-            const updatedata = [...submitteddata];
+            const updatedata = submitteddata;
             updatedata[editindex] = inputvalue;
             setdata(updatedata);
             setedit(false);
@@ -87,25 +97,25 @@ export const Frontpage = () => {
     return (
 
         <div className="a1">
-            
-                <form onSubmit={Submitted}>
 
-                    <div>
-                        <label htmlFor="fname">FirstName : </label>
-                        <input type="text" name="fname" value={inputvalue.fname} onChange={Change} placeholder="FirstName..." required /></div>
+            <form onSubmit={Submitted}>
 
-                    <div> <label htmlFor="lname">LastName : </label>
-                        <input type="text" name="lname" value={inputvalue.lname} onChange={Change} placeholder="LastName..." required /></div>
+                <div>
+                    <label htmlFor="fname">FirstName : </label>
+                    <input type="text" name="fname" value={inputvalue.fname} onChange={Change} placeholder="FirstName..." required /></div>
 
-                    <div><label htmlFor="date">Date : </label>
-                        <input type="date" name="date" value={inputvalue.date} onChange={Change} required /></div>
+                <div> <label htmlFor="lname">LastName : </label>
+                    <input type="text" name="lname" value={inputvalue.lname} onChange={Change} placeholder="LastName..." required /></div>
 
-                    <div><button type="submit">Submit</button></div>
+                <div><label htmlFor="date">Date : </label>
+                    <input type="date" name="date" value={inputvalue.date} onChange={Change} required /></div>
 
-                </form>
+                <div><button type="submit">Submit</button></div>
 
-                <Tabledata Initialdata={submitteddata} handleEdit={handleEdit} handledelete={handledelete} />
-                
-            </div>
+            </form>
+
+            <Tabledata Initialdata={submitteddata} handleEdit={handleEdit} handledelete={handledelete} />
+
+        </div>
     )
 }
