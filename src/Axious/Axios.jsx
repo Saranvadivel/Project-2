@@ -4,7 +4,7 @@ import { useEffect } from "react"
 export const Axious=()=>{
     useEffect(()=>
         {
-            axios
+            axios 
             .post(`${process.env.REACT_APP_MYSERVER}/api/login/postmethod`,{
                 name:"Sara",
                 age:21

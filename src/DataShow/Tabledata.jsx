@@ -1,4 +1,4 @@
-export const Tabledata = ({ Initialdata,handleEdit, handledelete }) => {
+export const Tabledata = ({ Initialdata,handleEdit,handledelete }) => {
   const Fun = (index) => {
     handledelete(index);
   }
