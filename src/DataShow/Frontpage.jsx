@@ -1,21 +1,45 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./Frontpage.css"
 import { Tabledata } from "./Tabledata";
+import axios from "axios";
 export const Frontpage = () => {
     const [inputvalue, setvalue] = useState({
 
         fname: "",
         lname: "",
         date: "",
-        age:null
+        age: null
 
     });
-    
 
+    // console.log(inputvalue);
     const [isedit, setedit] = useState(false);
     const [editindex, seteditindex] = useState(null);
 
+const fetch=()=>{
+    axios.get(`${process.env.REACT_APP_MYSERVER}/get`,
+    )
+            .then(res => setdata(res.data.data))
+        .catch(Error => console.log(Error))
+
+}
+useEffect(()=>{
+ fetch();
+},[]);
     const Change = (e) => {
+
+        // CalculateAge(e);
+        setvalue({
+
+            ...inputvalue,
+            [e.target.name]: e.target.value,
+            // age: age
+
+        });
+
+    }
+
+    const Change1 = (e) => {
 
         CalculateAge(e);
 
@@ -34,48 +58,59 @@ export const Frontpage = () => {
             age--;
 
         }
-    
+
         setvalue({
 
             ...inputvalue,
             [e.target.name]: e.target.value,
             age: age
-            
+
         });
     }
-    
 
     const [submitteddata, setdata] = useState([]);
 
     const Submitted = (e) => {
-
         e.preventDefault();
 
-        if (isedit) {
+        // if (isedit) {
 
-            const updatedata = submitteddata;
-            updatedata[editindex] = inputvalue;
-            setdata(updatedata);
-            setedit(false);
-            seteditindex(null);
+        //     const updatedata = [...submitteddata];
+        //     updatedata[editindex] = inputvalue;
+        //     // setdata(updatedata);
+        //     setedit(false);
+        //     seteditindex(null);
 
-        }
+        // }
 
-        else {
 
-            setdata([...submitteddata,
-                inputvalue])
-        }
+        // else {
 
-        setvalue({
+        //     setdata([...submitteddata,
+        //         inputvalue])
 
-            fname: "",
-            lname: "",
-            date: ""
+        // }
 
-        })
+        // setvalue({
 
+        //     fname: "",
+        //     lname: "",
+        //     date: ""
+
+        // })
+
+        axios.post(`${process.env.REACT_APP_MYSERVER}/login`,
+            inputvalue
+        )
+        .then(Response =>{
+            if(Response.data.code==200){
+                fetch();
+                console.log(Response)
+            }
+        } )
+            .catch(Error => console.log(Error))
     }
+    // console.log(inputvalue);
 
     const handleEdit = (index) => {
 
@@ -108,7 +143,7 @@ export const Frontpage = () => {
                     <input type="text" name="lname" value={inputvalue.lname} onChange={Change} placeholder="LastName..." required /></div>
 
                 <div><label htmlFor="date">Date : </label>
-                    <input type="date" name="date" value={inputvalue.date} onChange={Change} required /></div>
+                    <input type="date" name="date" value={inputvalue.date} onChange={Change1} required /></div>
 
                 <div><button type="submit">Submit</button></div>
 
